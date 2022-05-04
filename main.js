@@ -3,14 +3,9 @@
 (function() {
   class EditableList extends HTMLElement {
     constructor() {
-      // establish prototype chain
       super();
 
-      // attaches shadow tree and returns shadow root reference
-
       const shadow = this.attachShadow({ mode: 'open' });
-
-      // creating a container for the editable-list component
       const editableListContainer = document.createElement('div');
 
       // get attribute values from getters
@@ -24,32 +19,50 @@
       // creating the inner HTML of the editable list element
       editableListContainer.innerHTML = `
         <style>
-          li, div > div {
+        ul{
+             padding-left: initial;
+        }
+          li{
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: start;
           }
           .icon {
-            background-color: #fff;
+            background-color: #ffff86;
             border: none;
             cursor: pointer;
-            float: right;
             font-size: 1.8rem;
           }
+        h3{
+            text-align: center;
+        }
+        input{
+            border: none;
+            border-bottom: 1px solid black;
+        }
+        input:focus{
+        outline:none;
+        }
+
         </style>
+
+
         <h3>${title}</h3>
-        <ul class="item-list">
-          ${listItems.map(item => `
-            <li>${item}
-              <button class="editable-list-remove-item icon">&ominus;</button>
-            </li>
-          `).join('')}
-        </ul>
-        <div>
-          <label>${addItemText}</label>
-          <input class="add-new-list-item-input" type="text"></input>
-          <button class="editable-list-add-item icon">&oplus;</button>
-        </div>
+              <label>${addItemText}</label>
+              <input class="add-new-list-item-input" type="text" placeholder = "Write here..."></input>
+              <button class="editable-list-add-item icon">&oplus;</button>
+
+            <ul class="item-list">
+
+              ${listItems.map(item => `
+                <li>${item}
+                  <button class="editable-list-remove-item icon">&ominus;</button>
+                </li>
+              `).join('')}
+
+            </ul>
+
+
       `;
 
       // binding methods
@@ -123,6 +136,12 @@
 
     removeListItem(e) {
       e.target.parentNode.remove();
+
+         fetch('https://excuser-orpin.vercel.app/')
+              .then(res => res.json())
+                  .then((out) => {
+                      alert(out[0].excuse)
+              }).catch(err => console.error(err));
     }
   }
 
